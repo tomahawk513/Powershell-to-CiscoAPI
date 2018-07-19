@@ -1,10 +1,18 @@
 ﻿### New Site Creation Script ###
 $URI = "https://gob-cucm-1.andersonsinc.com:8443/axl/"
-$username = "AXLADMIN"
-$password = "rents-8TExwW"
+$username = "AXL USERNAME GOES HERE"
+$password = "PASSWORD GOES HERE"
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$password)))
 #Invoke-RestMethod -Uri $URI -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} 
-### DO NOT CHANGE ABOVE ###
+### DO NOT CHANGE ABOVE (other than username/password) ###
+### Base.csv is a CSV file with the following columns:
+### SITEID, IP, COBorNOT, PREFIX, TZ, and City.###
+### COBorNOT refers to my company's central location which is configured a little differently than other sites due to our 
+### local SIP trunk for calls.  You can probably eliminate this column and references to it if all of your sites are identical.
+### SITEID is the 3-Digit Site ID.
+### IP is the IP Address of the local voice router.
+### Prefix is the four-digit site prefix for internal calling.
+### TZ is Time Zone. ###
 $BASEfile = "C:\Scripts\NewSite\Base.csv"
 $BASE = $null
 $BASE = Import-Csv $BASEfile
@@ -21,13 +29,21 @@ foreach ($SITE in $BASE){
         $TZ = "CST"
         }
     $CITY = $SITE.CITY
+    ### Device Pool ###
     $DP = "$SITEID-DP"
+    ### Standard Local Route Group uuid - You'll need to find this out for your own local cluster. ###
     $SLRGuuid = "00000000-1111-0000-0000-000000000000"
+    ### SRST instance ###
     $SRST = "$SITEID-SRST"
+    ### We use Cisco 4321s at our site, but you can call them whatever you want. ###
     $4321 = "$SITEID-4321"
+    ### Route Group ###
     $RG = "$SITEID-RG"
+    ### Route List ###
     $RL = "$SITEID-RL"
+    ### VoiceMail Profile ###
     $VMP = "$SITEID-VMP"
+    ### Cisco Unified Communicatiosn Manager Group uuid - Find your own. ###
     $CMGNuuid = "C413001B-C34C-6A72-AE0B-86B6587F88FE"
     $CUGNname = "CUCM-2-3-1"
     $CSSlocal = "$SITEID-Local"
