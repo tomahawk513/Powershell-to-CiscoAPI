@@ -1,7 +1,7 @@
 ﻿### New Site Creation Script ###
 $URI = "https://gob-cucm-1.andersonsinc.com:8443/axl/"
-$username = "AXLADMIN"
-$password = "rents-8TExwW"
+$username = "AXL USERNAME GOES HERE"
+$password = "PASSWORD GOES HERE"
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$password)))
 ### DO NOT CHANGE ABOVE ###
 $USERID = Read-host -Prompt "Enter the User-ID of the person whose phone you want to add lines."
