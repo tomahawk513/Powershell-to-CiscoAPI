@@ -46,18 +46,26 @@ foreach ($SITE in $BASE){
     ### Cisco Unified Communicatiosn Manager Group uuid - Find your own. ###
     $CMGNuuid = "C413001B-C34C-6A72-AE0B-86B6587F88FE"
     $CUGNname = "CUCM-2-3-1"
+    ### Calling Search Spaces ###
     $CSSlocal = "$SITEID-Local"
     $CSSld = "$SITEID-LD"
     $CSSintl = "$SITEID-INTL"
     $CSS911 = "$SITEID-911"
+    ### Partitions ###
     $PT = "$SITEID-PT"
     $PTet = "$SITEID-Extension-Translation"
     $PTpl = "$SITEID-PSTN-Local"
+    ### Calling Search Space for the Translation Pattern that we'll build. ###
     $CSStx = "AllPhones"
+    ### Route Plan ###
     $RP = "810010501"+$PREFIX.Substring(1,3)
+    ### Unity CSS ###
     $CSS = "$SITEID-CSS"
+    ### Unity Class of Service ###
     $COS = "$SITEID-COS"
+    ### Unity VoiceMail Template ###
     $VMtemplate = "$SITEID-Template"
+### This is the SRST XML string that we'll send to CUCM. ###
 $SRSTxml = [xml]@"
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.cisco.com/AXL/API/11.5">
 <soapenv:Header/>
@@ -108,6 +116,7 @@ $DPxml = [xml]@"
 </soapenv:Envelope>
 "@
 $DPresult = Invoke-RestMethod -Uri $URI  -body $DPxml -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -ContentType “Text/XML” -Method post -ErrorAction Ignore
+### You don't actually need to output $DPresult, it's just to let me know it was successful when running the code. ###
 $DPresult 
 $Trunkxml = [xml]@"
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.cisco.com/AXL/API/11.5">
@@ -226,6 +235,7 @@ $Trunkuuidxml = [xml]@"
 "@
 $Trunkuuid = Invoke-RestMethod -Uri $URI  -body $Trunkuuidxml -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -ContentType “Text/XML” -Method post -ErrorAction Ignore
 $Trunkuuid = $Trunkuuid.Outerxml
+### This separates the UUID for the Trunk you just created in CUCM so it can be referenced later. ###
 $Trunkuuid = $Trunkuuid | select-string -pattern "(?<=uuid=`"{)(.*)(?=\}`"><name>)" | ForEach-Object {$_.Matches.Groups[1].value}
 $Trunkuuid
 $RGxml = [xml]@"
