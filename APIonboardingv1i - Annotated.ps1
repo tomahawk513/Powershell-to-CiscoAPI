@@ -3,8 +3,8 @@
 #v1i changes: allow ipPhone to contain 81XXXXXX numbers.  
 ### Script to add new phone to user ###
 $URI = "https://gob-cucm-1.andersonsinc.com:8443/axl/"
-$username = "AXLADMIN"
-$password = "rents-8TExwW"
+$username = "AXL USERNAME GOES HERE"
+$password = "PASSWORD GOES HERE"
 $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username,$password)))
 #Invoke-RestMethod -Uri $URI -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} 
 ### DO NOT CHANGE ABOVE ###
